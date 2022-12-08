@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.myapp.composeeducation.enum.AvailableLocale
-import ru.myapp.composeeducation.enum.EnumWrapper
 import ru.myapp.composeeducation.enum.Font
 import ru.myapp.composeeducation.enum.ReportType
 import ru.myapp.composeeducation.enum.TransactionType
@@ -35,14 +34,10 @@ import ru.myapp.composeeducation.ui.theme.ComposeEducationTheme
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
 
-    private val reports = EnumWrapper(ReportType.values().asList())
-    private val fonts = EnumWrapper(Font.values().asList())
-    private val locales = EnumWrapper(AvailableLocale.values().asList())
-    private val slipTransactionTypes = EnumWrapper(arrayOf(
-        TransactionType.INCOMING,
-        TransactionType.REVERSAL,
-        TransactionType.INCOMING_REFUND
-    ).asList() )
+    private val reports = ReportType.values().asList()
+    private val fonts = Font.values().asList()
+    private val locales = AvailableLocale.values().asList()
+    private val slipTransactionTypes = TransactionType.values().asList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,25 +60,25 @@ class MainActivity : ComponentActivity() {
 @Suppress("LongMethod", "ComplexMethod")
 fun MainUI(
     modifier: Modifier = Modifier,
-    reports: EnumWrapper<List<ReportType>>,
-    fonts: EnumWrapper<List<Font>>,
-    locales: EnumWrapper<List<AvailableLocale>>,
-    slipTransactionTypes: EnumWrapper<List<TransactionType>>,
+    reports: List<ReportType>,
+    fonts: List<Font>,
+    locales: List<AvailableLocale>,
+    slipTransactionTypes: List<TransactionType>,
 ) {
 
     var enabledActions by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
     var reportExpanded by remember { mutableStateOf(false) }
-    var reportSelection by remember { mutableStateOf(reports.list.first().toString()) }
+    var reportSelection by remember { mutableStateOf(reports.first().toString()) }
 
     var fontExpanded by remember { mutableStateOf(false) }
-    var fontSelection by remember { mutableStateOf(fonts.list.first().toString()) }
+    var fontSelection by remember { mutableStateOf(fonts.first().toString()) }
 
     var localeExpanded by remember { mutableStateOf(false) }
-    var localeSelection by remember { mutableStateOf(locales.list.first().toString()) }
+    var localeSelection by remember { mutableStateOf(locales.first().toString()) }
 
     var transactionTypeExpanded by remember { mutableStateOf(false) }
-    var transactionTypeSelection by remember { mutableStateOf(slipTransactionTypes.list.first().toString()) }
+    var transactionTypeSelection by remember { mutableStateOf(slipTransactionTypes.first().toString()) }
     var transactionTypeVisibility by remember { mutableStateOf(true) }
 
     Column(
@@ -104,7 +99,7 @@ fun MainUI(
                 transactionTypeVisibility = it == ReportType.SLIP_REPORT
             },
             selectedReportName = reportSelection,
-            items = reports.list,
+            items = reports,
             label = "Select report type",
         )
         PrintingDropDownMenu(
@@ -117,7 +112,7 @@ fun MainUI(
                 fontSelection = it.name
             },
             selectedReportName = fontSelection,
-            items = fonts.list,
+            items = fonts,
             label = "Select font type",
         )
         Row(
@@ -138,7 +133,7 @@ fun MainUI(
                     localeSelection = it.name
                 },
                 selectedReportName = localeSelection,
-                items = locales.list,
+                items = locales,
                 label = "Select locale",
             )
             if (transactionTypeVisibility) {
@@ -155,7 +150,7 @@ fun MainUI(
                         transactionTypeSelection = it.name
                     },
                     selectedReportName = transactionTypeSelection,
-                    items = slipTransactionTypes.list,
+                    items = slipTransactionTypes,
                     label = "Select transaction type",
                 )
             }
